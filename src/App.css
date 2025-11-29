@@ -40,3 +40,59 @@ body{
 ::-webkit-scrollbar{
   display: none;
 }
+
+/* src/App.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+
+.App {
+  min-height: 100vh;
+}
+
+/* Personalizar la selección de texto */
+::selection {
+  background-color: #667eea;
+  color: white;
+}
+
+::-moz-selection {
+  background-color: #667eea;
+  color: white;
+}
+
+/* Deshabilitar selección en elementos interactivos */
+button,
+a,
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #667eea;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5568d3;
+}

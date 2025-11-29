@@ -1,0 +1,67 @@
+.container {
+  padding: 15px 20px;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  margin: 20px auto;
+  max-width: 1400px;
+  overflow-x: auto;
+}
+
+.filterScroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 5px 0;
+  scrollbar-width: thin;
+}
+
+.filterScroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.filterScroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.filterScroll::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.filterScroll::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.categoryButton {
+  padding: 8px 20px;
+  border: 2px solid;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.categoryButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.active {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px 15px;
+  }
+
+  .categoryButton {
+    font-size: 12px;
+    padding: 6px 16px;
+  }
+}

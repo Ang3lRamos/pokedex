@@ -1,0 +1,97 @@
+.card {
+  border-radius: 25px;
+  padding: 40px 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: inherit;
+  opacity: 0.9;
+  z-index: 0;
+}
+
+.card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.card:hover {
+  transform: translateY(-15px) scale(1.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.emoji {
+  font-size: 5rem;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  transition: transform 0.3s ease;
+}
+
+.card:hover .emoji {
+  transform: scale(1.2) rotateZ(5deg);
+}
+
+.name {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  margin: 10px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.locationCount {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 10px 0 20px 0;
+  font-weight: 500;
+}
+
+.viewButton {
+  padding: 12px 30px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid white;
+  border-radius: 25px;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.card:hover .viewButton {
+  background: white;
+  color: #667eea;
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 30px 20px;
+  }
+
+  .emoji {
+    font-size: 4rem;
+  }
+
+  .name {
+    font-size: 1.5rem;
+  }
+
+  .locationCount {
+    font-size: 1rem;
+  }
+}

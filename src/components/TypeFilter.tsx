@@ -1,4 +1,5 @@
-    import styles from './typeFilter.module.css';
+import { useRef } from 'react';
+import styles from './typeFilter.module.css';
 
 interface TypeFilterProps {
   selectedType: string;
@@ -6,6 +7,8 @@ interface TypeFilterProps {
 }
 
 const TypeFilter = ({ selectedType, onTypeChange }: TypeFilterProps) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   const types = [
     { name: 'all', label: 'Todos', color: '#777' },
     { name: 'normal', label: 'Normal', color: '#A8A878' },
@@ -30,7 +33,7 @@ const TypeFilter = ({ selectedType, onTypeChange }: TypeFilterProps) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.filterScroll}>
+      <div className={styles.filterScroll} ref={scrollRef}>
         {types.map((type) => (
           <button
             key={type.name}

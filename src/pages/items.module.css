@@ -1,0 +1,95 @@
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-bottom: 100px;
+  min-height: 100vh;
+}
+
+.statsInfo {
+  text-align: center;
+  padding: 15px;
+  background: white;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #667eea;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.totalCount {
+  color: #888;
+  font-weight: 400;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.loadingText {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #667eea;
+  padding: 60px;
+  font-weight: 600;
+}
+
+.noResults {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+.noResults p {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.loadMoreContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  padding: 20px;
+}
+
+.loadMoreButton {
+  padding: 15px 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.loadMoreButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+  }
+
+  .container {
+    padding: 15px;
+  }
+
+  .statsInfo {
+    font-size: 14px;
+  }
+
+  .loadMoreButton {
+    padding: 12px 30px;
+    font-size: 14px;
+  }
+}

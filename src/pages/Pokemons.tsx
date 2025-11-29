@@ -5,6 +5,7 @@ import { Header, Footer, LoadingScreen } from './index';
 import PokemonCard from '../components/PokemonCard';
 import TypeFilter from '../components/TypeFilter';
 import ScrollToTop from '../components/ScrollToTop';
+import ScrollProgressBar from '../components/ScrollProgressBar';
 import styles from './pokemons.module.css';
 
 const Pokemons = () => {
@@ -97,6 +98,7 @@ const Pokemons = () => {
   return (
     <>
       <ScrollToTop />
+      <ScrollProgressBar />
       <Header query={query} setQuery={setQuery} />
       
       <TypeFilter 

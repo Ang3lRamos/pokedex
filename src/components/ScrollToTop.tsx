@@ -35,6 +35,7 @@ const ScrollToTop = () => {
           onClick={scrollToTop}
           className={styles.scrollButton}
           aria-label="Volver arriba"
+          title="Volver arriba"
         >
           <img src={Pikachu} alt="Pikachu" className={styles.pikachuIcon} />
         </button>

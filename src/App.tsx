@@ -1,6 +1,7 @@
 import './App.css';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import {Items, Pokemons, Pokemon} from "./pages"
+import { Items, Pokemons, Pokemon, Map } from "./pages";
+
 function App() {
   return (
     <Router>
@@ -9,6 +10,7 @@ function App() {
           <Route path="/pokemons/:name" element={<Pokemon/>} />
           <Route path="/pokemons" element={<Pokemons/>}/>
           <Route path="/items" element={<Items/>} />
+          <Route path="/map" element={<Map/>} />
           <Route path="/" element={<Pokemons/>} />
         </Routes>
       </div>

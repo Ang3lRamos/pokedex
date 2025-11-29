@@ -1,0 +1,138 @@
+.progressContainer {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 14px;
+  height: 100vh;
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(220, 220, 220, 0.4) 100%
+  );
+  z-index: 999;
+  backdrop-filter: blur(5px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+  border-left: 1px solid rgba(200, 200, 200, 0.3);
+}
+
+.progressContainer:hover {
+  width: 18px;
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(220, 220, 220, 0.5) 100%
+  );
+}
+
+.progressContainer.dragging {
+  width: 22px;
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(220, 220, 220, 0.6) 100%
+  );
+}
+
+.progressBar {
+  width: 100%;
+  background: linear-gradient(180deg, 
+    #EE1515 0%,
+    #CC0000 50%,
+    #AA0000 100%
+  );
+  transition: none;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 0 15px rgba(238, 21, 21, 0.6);
+  position: relative;
+  pointer-events: none;
+  border-left: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.progressBar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border-radius: 0 0 6px 6px;
+}
+
+.progressBar::after {
+  content: '';
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  background-image: url('../assets/pokeball.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.4));
+  transition: all 0.3s ease;
+}
+
+.progressContainer:hover .progressBar::after {
+  width: 36px;
+  height: 36px;
+  bottom: -18px;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+}
+
+.progressContainer.dragging .progressBar {
+  box-shadow: 0 0 20px rgba(238, 21, 21, 0.8);
+}
+
+.progressContainer.dragging .progressBar::after {
+  width: 42px;
+  height: 42px;
+  bottom: -21px;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.6));
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  100% {
+    transform: translateX(-50%) rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .progressContainer {
+    width: 12px;
+  }
+
+  .progressContainer:hover {
+    width: 14px;
+  }
+
+  .progressContainer.dragging {
+    width: 16px;
+  }
+
+  .progressBar::after {
+    width: 28px;
+    height: 28px;
+    bottom: -14px;
+  }
+
+  .progressContainer:hover .progressBar::after {
+    width: 32px;
+    height: 32px;
+    bottom: -16px;
+  }
+
+  .progressContainer.dragging .progressBar::after {
+    width: 36px;
+    height: 36px;
+    bottom: -18px;
+  }
+}
