@@ -1,0 +1,46 @@
+import { useState, useEffect } from 'react';
+import Pikachu from '../assets/pikachu.png';
+import styles from './scrollToTop.module.css';
+
+const ScrollToTop = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener('scroll', toggleVisibility);
+
+    return () => {
+      window.removeEventListener('scroll', toggleVisibility);
+    };
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  return (
+    <>
+      {isVisible && (
+        <button
+          onClick={scrollToTop}
+          className={styles.scrollButton}
+          aria-label="Volver arriba"
+        >
+          <img src={Pikachu} alt="Pikachu" className={styles.pikachuIcon} />
+        </button>
+      )}
+    </>
+  );
+};
+
+export default ScrollToTop;
