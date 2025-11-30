@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Location } from '../api/items-locations';
 import styles from './locationDetail.module.css';
 
@@ -18,11 +18,7 @@ const LocationDetail = ({ location, onClose }: LocationDetailProps) => {
   const [encounters, setEncounters] = useState<AreaEncounter[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadEncounters();
-  }, [location]);
-
-  const loadEncounters = async () => {
+  const loadEncounters = useCallback(async () => {
     try {
       setLoading(true);
       const allEncounters: AreaEncounter[] = [];
@@ -84,7 +80,11 @@ const LocationDetail = ({ location, onClose }: LocationDetailProps) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [location.areas]);
+
+  useEffect(() => {
+    loadEncounters();
+  }, [loadEncounters]);
 
   const formatName = (name: string) => {
     return name
