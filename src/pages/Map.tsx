@@ -57,6 +57,7 @@ const Map = () => {
 
   return (
     <>
+      <ScrollProgressBar />
       <ScrollToTop />
       <Header query="" setQuery={() => {}} />
 

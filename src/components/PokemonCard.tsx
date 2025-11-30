@@ -9,6 +9,7 @@ interface PokemonCardProps {
 
 const PokemonCard = ({ pokemon }: PokemonCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const getTypeColor = (type: string): string => {
     const colors: Record<string, string> = {
@@ -37,6 +38,10 @@ const PokemonCard = ({ pokemon }: PokemonCardProps) => {
   const primaryType = pokemon.types?.[0] || 'normal';
   const gradientColor = getTypeColor(primaryType);
 
+  // Usar el GIF como imagen principal si la imagen oficial falla
+  const fallbackImage = pokemon.gifSrc || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`;
+  const displayImage = imageError ? fallbackImage : (isHovered && pokemon.gifSrc ? pokemon.gifSrc : pokemon.imgSrc);
+
   return (
     <Link 
       to={`/pokemons/${pokemon.name}`} 
@@ -53,10 +58,12 @@ const PokemonCard = ({ pokemon }: PokemonCardProps) => {
 
       <div className={styles.imageContainer}>
         <img 
-          src={isHovered && pokemon.gifSrc ? pokemon.gifSrc : pokemon.imgSrc}
+          src={displayImage}
           alt={pokemon.name}
           className={styles.image}
           loading="lazy"
+          onError={() => setImageError(true)}
+          onLoad={() => setImageError(false)}
         />
       </div>
 

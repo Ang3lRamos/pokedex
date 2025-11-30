@@ -14,3 +14,4 @@ export { default as CategoryFilter } from '../components/CategoryFilter';
 export { default as RegionCard } from '../components/RegionCard';
 export { default as LocationCard } from '../components/LocationCard';
 export { default as ScrollProgressBar } from '../components/ScrollProgressBar';
+export { default as LocationDetail } from '../components/LocationDetail';

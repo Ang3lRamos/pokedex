@@ -8,12 +8,31 @@
   transition: all 0.3s ease;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   border-left: 5px solid #667eea;
+  position: relative;
+  z-index: 1;
+  cursor: pointer; /* Indica que es clickeable */
 }
 
 .card:hover {
   transform: translateX(10px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   border-left-color: #764ba2;
+  z-index: 10;
+}
+
+.card::after {
+  content: '👁️';
+  position: absolute;
+  right: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover::after {
+  opacity: 1;
 }
 
 .icon {
@@ -56,6 +75,11 @@
   .card {
     padding: 20px;
     gap: 15px;
+  }
+
+  .card::after {
+    right: 15px;
+    font-size: 1.2rem;
   }
 
   .icon {

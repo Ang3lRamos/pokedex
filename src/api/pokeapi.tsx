@@ -21,14 +21,20 @@ export async function fetchPokemons(limit: number = 151, offset: number = 0): Pr
         }
         const pokemonData = await pokemonResponse.json();
         
+        // Múltiples fuentes de imagen con prioridad
+        const officialArtwork = pokemonData.sprites.other?.['official-artwork']?.front_default;
+        const dreamWorld = pokemonData.sprites.other?.dream_world?.front_default;
+        const homeFront = pokemonData.sprites.other?.home?.front_default;
+        const defaultSprite = pokemonData.sprites.front_default;
+        const fallbackUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonData.id}.png`;
+        
         return {
           name: pokemonData.name,
           id: pokemonData.id,
-          imgSrc: pokemonData.sprites.other['official-artwork']?.front_default || 
-                  pokemonData.sprites.front_default ||
-                  `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonData.id}.png`,
+          imgSrc: officialArtwork || dreamWorld || homeFront || defaultSprite || fallbackUrl,
           gifSrc: pokemonData.sprites.versions?.['generation-v']?.['black-white']?.animated?.front_default ||
-                  pokemonData.sprites.front_default,
+                  pokemonData.sprites.front_default ||
+                  fallbackUrl,
           types: pokemonData.types.map((t: any) => t.type.name)
         };
       } catch (error) {
@@ -163,13 +169,20 @@ export async function fetchPokemonsByType(type: string): Promise<Pokemon[]> {
     const pokemonPromises = data.pokemon.map(async (p: any) => {
       try {
         const pokemonData = await fetch(p.pokemon.url).then(r => r.json());
+        
+        const officialArtwork = pokemonData.sprites.other?.['official-artwork']?.front_default;
+        const dreamWorld = pokemonData.sprites.other?.dream_world?.front_default;
+        const homeFront = pokemonData.sprites.other?.home?.front_default;
+        const defaultSprite = pokemonData.sprites.front_default;
+        const fallbackUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonData.id}.png`;
+        
         return {
           name: pokemonData.name,
           id: pokemonData.id,
-          imgSrc: pokemonData.sprites.other['official-artwork']?.front_default ||
-                  pokemonData.sprites.front_default,
+          imgSrc: officialArtwork || dreamWorld || homeFront || defaultSprite || fallbackUrl,
           gifSrc: pokemonData.sprites.versions?.['generation-v']?.['black-white']?.animated?.front_default ||
-                  pokemonData.sprites.front_default,
+                  pokemonData.sprites.front_default ||
+                  fallbackUrl,
           types: pokemonData.types.map((t: any) => t.type.name)
         };
       } catch (error) {

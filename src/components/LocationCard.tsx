@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { Location } from '../api/items-locations';
+import LocationDetail from './LocationDetail';
 import styles from './locationCard.module.css';
 
 interface LocationCardProps {
@@ -6,6 +8,8 @@ interface LocationCardProps {
 }
 
 const LocationCard = ({ location }: LocationCardProps) => {
+  const [showDetail, setShowDetail] = useState(false);
+
   const formatName = (name: string) => {
     return name
       .split('-')
@@ -36,16 +40,25 @@ const LocationCard = ({ location }: LocationCardProps) => {
   };
 
   return (
-    <div className={styles.card}>
-      <div className={styles.icon}>{getLocationIcon(location.name)}</div>
-      <div className={styles.info}>
-        <h3 className={styles.name}>{formatName(location.name)}</h3>
-        <p className={styles.region}>Región: {formatName(location.region)}</p>
-        {location.areas.length > 0 && (
-          <p className={styles.areas}>{location.areas.length} áreas</p>
-        )}
+    <>
+      <div className={styles.card} onClick={() => setShowDetail(true)}>
+        <div className={styles.icon}>{getLocationIcon(location.name)}</div>
+        <div className={styles.info}>
+          <h3 className={styles.name}>{formatName(location.name)}</h3>
+          <p className={styles.region}>Región: {formatName(location.region)}</p>
+          {location.areas.length > 0 && (
+            <p className={styles.areas}>{location.areas.length} áreas</p>
+          )}
+        </div>
       </div>
-    </div>
+
+      {showDetail && (
+        <LocationDetail
+          location={location}
+          onClose={() => setShowDetail(false)}
+        />
+      )}
+    </>
   );
 };
 

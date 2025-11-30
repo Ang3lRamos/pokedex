@@ -1,4 +1,3 @@
-// src/pages/Items.tsx
 import { useEffect, useState } from 'react';
 import { fetchItems, fetchItemsByCategory, searchItems, Item } from '../api/items-locations';
 import { Header, Footer, LoadingScreen, ScrollToTop, ScrollProgressBar } from './index';
@@ -9,12 +8,9 @@ import styles from './items.module.css';
 const Items = () => {
   const [allItems, setAllItems] = useState<Item[]>([]);
   const [filteredItems, setFilteredItems] = useState<Item[]>([]);
-  const [displayedItems, setDisplayedItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [displayCount, setDisplayCount] = useState(50);
-  const LOAD_MORE_COUNT = 50;
 
   useEffect(() => {
     loadAllItems();
@@ -29,10 +25,6 @@ const Items = () => {
       setFilteredItems(allItems);
     }
   }, [query, allItems, selectedCategory]);
-
-  useEffect(() => {
-    setDisplayedItems(filteredItems.slice(0, displayCount));
-  }, [filteredItems, displayCount]);
 
   const loadAllItems = async () => {
     try {
@@ -50,23 +42,19 @@ const Items = () => {
   const handleSearch = () => {
     if (!query.trim()) {
       setFilteredItems(allItems);
-      setDisplayCount(50);
       return;
     }
 
     const results = searchItems(query, allItems);
     setFilteredItems(results);
-    setDisplayCount(50);
   };
 
   const handleCategoryFilter = async (category: string) => {
     setSelectedCategory(category);
     setQuery('');
-    setDisplayCount(10000);
 
     if (category === 'all') {
       setFilteredItems(allItems);
-      setDisplayCount(50);
       return;
     }
 
@@ -81,18 +69,14 @@ const Items = () => {
     }
   };
 
-  const handleLoadMore = () => {
-    setDisplayCount(prev => prev + LOAD_MORE_COUNT);
-  };
-
   if (loading && allItems.length === 0) {
     return <LoadingScreen />;
   }
 
   return (
     <>
-      <ScrollProgressBar />
       <ScrollToTop />
+      <ScrollProgressBar />
       <Header query={query} setQuery={setQuery} />
       
       <CategoryFilter 
@@ -110,28 +94,17 @@ const Items = () => {
         ) : (
           <>
             <div className={styles.statsInfo}>
-              Mostrando {displayedItems.length} de {filteredItems.length} items
+              Mostrando {filteredItems.length} items
               {selectedCategory === 'all' && !query && (
-                <span className={styles.totalCount}> (Total disponibles: {allItems.length})</span>
+                <span className={styles.totalCount}> (Total: {allItems.length})</span>
               )}
             </div>
 
             <div className={styles.grid}>
-              {displayedItems.map((item) => (
+              {filteredItems.map((item) => (
                 <ItemCard key={item.id} item={item} />
               ))}
             </div>
-
-            {displayedItems.length < filteredItems.length && (
-              <div className={styles.loadMoreContainer}>
-                <button
-                  onClick={handleLoadMore}
-                  className={styles.loadMoreButton}
-                >
-                  Cargar más items ({filteredItems.length - displayedItems.length} restantes)
-                </button>
-              </div>
-            )}
           </>
         )}
       </main>
