@@ -10,6 +10,8 @@ interface LocationDetailProps {
 interface AreaEncounter {
   pokemon: string;
   methods: string[];
+  imageUrl: string;
+  id: number;
 }
 
 const LocationDetail = ({ location, onClose }: LocationDetailProps) => {
@@ -34,17 +36,29 @@ const LocationDetail = ({ location, onClose }: LocationDetailProps) => {
           const areaData = await response.json();
           
           if (areaData.pokemon_encounters && areaData.pokemon_encounters.length > 0) {
-            areaData.pokemon_encounters.forEach((encounter: any) => {
+            for (const encounter of areaData.pokemon_encounters) {
               const pokemonName = encounter.pokemon.name;
               const methods = encounter.version_details
                 .flatMap((vd: any) => vd.encounter_details.map((ed: any) => ed.method.name))
                 .filter((v: any, i: any, a: any) => a.indexOf(v) === i);
               
-              allEncounters.push({
-                pokemon: pokemonName,
-                methods: methods
-              });
-            });
+              // Obtener datos del Pokémon para la imagen
+              try {
+                const pokemonResponse = await fetch(encounter.pokemon.url);
+                const pokemonData = await pokemonResponse.json();
+                const imageUrl = pokemonData.sprites.front_default || 
+                                `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonData.id}.png`;
+                
+                allEncounters.push({
+                  pokemon: pokemonName,
+                  methods: methods,
+                  imageUrl: imageUrl,
+                  id: pokemonData.id
+                });
+              } catch (error) {
+                console.error(`Error fetching pokemon ${pokemonName}:`, error);
+              }
+            }
           }
         } catch (error) {
           console.error('Error fetching area:', error);
@@ -147,15 +161,25 @@ const LocationDetail = ({ location, onClose }: LocationDetailProps) => {
             <div className={styles.encountersList}>
               {encounters.map((encounter, index) => (
                 <div key={index} className={styles.encounterCard}>
-                  <div className={styles.pokemonName}>
-                    {formatName(encounter.pokemon)}
+                  <div className={styles.pokemonImageContainer}>
+                    <img 
+                      src={encounter.imageUrl} 
+                      alt={encounter.pokemon}
+                      className={styles.pokemonImage}
+                    />
+                    <span className={styles.pokemonId}>#{encounter.id}</span>
                   </div>
-                  <div className={styles.methods}>
-                    {encounter.methods.map((method, i) => (
-                      <span key={i} className={styles.methodBadge} title={formatName(method)}>
-                        {getMethodIcon(method)}
-                      </span>
-                    ))}
+                  <div className={styles.pokemonInfo}>
+                    <div className={styles.pokemonName}>
+                      {formatName(encounter.pokemon)}
+                    </div>
+                    <div className={styles.methods}>
+                      {encounter.methods.map((method, i) => (
+                        <span key={i} className={styles.methodBadge} title={formatName(method)}>
+                          {getMethodIcon(method)}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               ))}
