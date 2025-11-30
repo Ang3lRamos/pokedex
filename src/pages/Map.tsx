@@ -1,7 +1,7 @@
-// src/pages/Map.tsx
 import { useEffect, useState } from 'react';
 import { fetchRegions, fetchLocationsByRegion, Region, Location } from '../api/items-locations';
-import { Header, Footer, LoadingScreen, ScrollToTop, ScrollProgressBar } from './index';
+import { Header, Footer, LoadingScreen, ScrollToTop } from './index';
+import ScrollProgressBar from '../components/ScrollProgressBar';
 import RegionCard from '../components/RegionCard';
 import LocationCard from '../components/LocationCard';
 import styles from './map.module.css';
@@ -57,8 +57,8 @@ const Map = () => {
 
   return (
     <>
-      <ScrollProgressBar />
       <ScrollToTop />
+      <ScrollProgressBar />
       <Header query="" setQuery={() => {}} />
 
       <main className={styles.container}>

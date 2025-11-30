@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './scrollProgressBar.module.css';
 
 const ScrollProgressBar = () => {
@@ -48,16 +48,17 @@ const ScrollProgressBar = () => {
     handleInteraction(e.clientY);
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
+  const handleMouseMove = useCallback((e: MouseEvent) => {
     if (isDragging) {
       e.preventDefault();
       handleInteraction(e.clientY);
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDragging]);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-  };
+  }, []);
 
   const handleClick = (e: React.MouseEvent) => {
     if (!isDragging) {
@@ -77,7 +78,7 @@ const ScrollProgressBar = () => {
         window.removeEventListener('mouseup', handleMouseUp);
       };
     }
-  }, [isDragging]);
+  }, [isDragging, handleMouseMove, handleMouseUp]);
 
   return (
     <div 

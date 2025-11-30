@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { fetchPokemons, searchPokemon, fetchPokemonsByType } from '../api/pokeapi';
+import { useEffect, useState, useCallback } from 'react';
+import { fetchPokemons, fetchPokemonsByType } from '../api/pokeapi';
 import { Pokemon } from '../types/types';
 import { Header, Footer, LoadingScreen } from './index';
 import PokemonCard from '../components/PokemonCard';
@@ -19,30 +19,7 @@ const Pokemons = () => {
     loadAllPokemons();
   }, []);
 
-  useEffect(() => {
-    if (query) {
-      handleSearch();
-    } else if (selectedType !== 'all') {
-      handleTypeFilter(selectedType);
-    } else {
-      setFilteredPokemons(allPokemons);
-    }
-  }, [query, allPokemons, selectedType]);
-
-  const loadAllPokemons = async () => {
-    try {
-      setLoading(true);
-      const data = await fetchPokemons(10000, 0);
-      setAllPokemons(data);
-      setFilteredPokemons(data);
-    } catch (error) {
-      console.error('Error loading pokemons:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
     if (!query.trim()) {
       setFilteredPokemons(allPokemons);
       return;
@@ -53,9 +30,9 @@ const Pokemons = () => {
       p.id.toString() === query
     );
     setFilteredPokemons(results);
-  };
+  }, [query, allPokemons]);
 
-  const handleTypeFilter = async (type: string) => {
+  const handleTypeFilter = useCallback(async (type: string) => {
     setSelectedType(type);
     setQuery('');
 
@@ -70,6 +47,29 @@ const Pokemons = () => {
       setFilteredPokemons(results);
     } catch (error) {
       console.error('Error filtering by type:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [allPokemons]);
+
+  useEffect(() => {
+    if (query) {
+      handleSearch();
+    } else if (selectedType !== 'all') {
+      handleTypeFilter(selectedType);
+    } else {
+      setFilteredPokemons(allPokemons);
+    }
+  }, [query, allPokemons, selectedType, handleSearch, handleTypeFilter]);
+
+  const loadAllPokemons = async () => {
+    try {
+      setLoading(true);
+      const data = await fetchPokemons(10000, 0);
+      setAllPokemons(data);
+      setFilteredPokemons(data);
+    } catch (error) {
+      console.error('Error loading pokemons:', error);
     } finally {
       setLoading(false);
     }

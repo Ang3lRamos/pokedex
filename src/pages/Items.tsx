@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { fetchItems, fetchItemsByCategory, searchItems, Item } from '../api/items-locations';
 import { Header, Footer, LoadingScreen, ScrollToTop, ScrollProgressBar } from './index';
 import ItemCard from '../components/ItemCard';
@@ -16,30 +16,7 @@ const Items = () => {
     loadAllItems();
   }, []);
 
-  useEffect(() => {
-    if (query) {
-      handleSearch();
-    } else if (selectedCategory !== 'all') {
-      handleCategoryFilter(selectedCategory);
-    } else {
-      setFilteredItems(allItems);
-    }
-  }, [query, allItems, selectedCategory]);
-
-  const loadAllItems = async () => {
-    try {
-      setLoading(true);
-      const data = await fetchItems(1000, 0);
-      setAllItems(data);
-      setFilteredItems(data);
-    } catch (error) {
-      console.error('Error loading items:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
     if (!query.trim()) {
       setFilteredItems(allItems);
       return;
@@ -47,9 +24,9 @@ const Items = () => {
 
     const results = searchItems(query, allItems);
     setFilteredItems(results);
-  };
+  }, [query, allItems]);
 
-  const handleCategoryFilter = async (category: string) => {
+  const handleCategoryFilter = useCallback(async (category: string) => {
     setSelectedCategory(category);
     setQuery('');
 
@@ -64,6 +41,29 @@ const Items = () => {
       setFilteredItems(results);
     } catch (error) {
       console.error('Error filtering by category:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [allItems]);
+
+  useEffect(() => {
+    if (query) {
+      handleSearch();
+    } else if (selectedCategory !== 'all') {
+      handleCategoryFilter(selectedCategory);
+    } else {
+      setFilteredItems(allItems);
+    }
+  }, [query, allItems, selectedCategory, handleSearch, handleCategoryFilter]);
+
+  const loadAllItems = async () => {
+    try {
+      setLoading(true);
+      const data = await fetchItems(1000, 0);
+      setAllItems(data);
+      setFilteredItems(data);
+    } catch (error) {
+      console.error('Error loading items:', error);
     } finally {
       setLoading(false);
     }
